@@ -10,7 +10,7 @@ To run the api, in the root folder of the project run:
  ./mvnw spring-boot:run
 ```
 
-The api is up now!!
+The api is up now!!  
 
 ### Run tests
 
@@ -32,10 +32,10 @@ It can be tested with swagger:
 
 ### Improves
 
-Validation number format for mobile  
-Add DockerFile 
-More Integration tests 
-
+* Validation number format for mobile  
+* Add DockerFile  
+* More Integration tests 
+* Alternative way to get low cost providers
 
 
 ### Reference Documentation

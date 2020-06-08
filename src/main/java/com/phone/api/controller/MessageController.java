@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 public class MessageController {
 
 	private SendService sendService;
-	
+
 	private MessageController(SendService sendService) {
 		this.sendService = sendService;
 	}
