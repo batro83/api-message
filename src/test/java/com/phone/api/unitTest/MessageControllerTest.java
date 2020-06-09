@@ -21,6 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.phone.api.dao.ProviderDao;
 import com.phone.api.dto.ResponseDto;
 import com.phone.api.service.SendService;
 
@@ -29,9 +30,11 @@ import com.phone.api.service.SendService;
 public class MessageControllerTest {
 
 	@Autowired
-	protected MockMvc mockMvc;
+	private MockMvc mockMvc;
 	@MockBean
-	protected SendService sendService;
+	private SendService sendService;
+	@MockBean
+	private ProviderDao providerDao;
 
 	@Test
 	public void test001_shouldReturnResponse1Provider() throws Exception {

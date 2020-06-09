@@ -3,7 +3,7 @@ package com.phone.api.service.impl;
 import static java.util.Collections.emptyList;
 
 import java.util.List;
-import java.util.Map;
+import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -17,8 +17,8 @@ import com.phone.api.service.ProviderService;
 public class ProviderServiceImpl implements ProviderService {
 
 	private ProviderDao providerDao;
-	
-	private ProviderServiceImpl( ProviderDao providerDao) {
+
+	private ProviderServiceImpl(ProviderDao providerDao) {
 		this.providerDao = providerDao;
 	}
 
@@ -30,10 +30,11 @@ public class ProviderServiceImpl implements ProviderService {
 
 	private List<Provider> getLowCostProvider(List<Provider> groupedHoted2) {
 		List<Provider> list = emptyList();
-		Map<Integer, List<Provider>> groupedProvidersByCost = groupedHoted2.stream()
+		NavigableMap<Integer, List<Provider>> groupedProvidersByCost = groupedHoted2.stream()
 			.collect(Collectors.groupingBy(Provider::getCost, TreeMap::new, Collectors.toList()));
-		if(!groupedProvidersByCost.isEmpty())
-			list = (List<Provider>) groupedProvidersByCost.values().toArray()[0];
+
+		if (!groupedProvidersByCost.isEmpty())
+			list = groupedProvidersByCost.firstEntry().getValue();
 		return list;
 	}
 
