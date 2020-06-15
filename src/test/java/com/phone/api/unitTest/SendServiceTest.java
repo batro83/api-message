@@ -6,17 +6,26 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.phone.api.dto.ResponseDto;
 import com.phone.api.model.Provider;
+import com.phone.api.provider.IProvider;
+import com.phone.api.provider.movistar.Movistar;
+import com.phone.api.provider.orange.Orange;
+import com.phone.api.provider.vodafone.Vodafone;
 import com.phone.api.service.ProviderService;
 import com.phone.api.service.impl.SendServiceImpl;
 
@@ -25,28 +34,45 @@ import com.phone.api.service.impl.SendServiceImpl;
 public class SendServiceTest {
 	@Mock
 	private ProviderService providerService;
-	
+
+	@Mock
+	private Movistar movistar;
+
+	@Mock
+	private Orange orange;
+
+	@Mock
+	private Vodafone vodafone;
+
 	@InjectMocks
 	private SendServiceImpl sendService;
-	
+
+	@Spy
+	private Map<String, IProvider> mapProvider;
+
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+	}
+
 	@Test
 	public void test001_shouldSendMessage() {
 		String mobile = "0034666111222";
 		String message = "Hello Wolrd!";
 		List<Provider> providerList = generateProviderList();
-		
 		when(providerService.getProvidersByPrefix("0034")).thenReturn(providerList);
 
+		when(mapProvider.get(Mockito.anyString())).thenReturn(movistar);
+
 		List<ResponseDto> dto = sendService.send(mobile, message);
-		
+
 		assertEquals(2, dto.size());
 		assertEquals(dto.get(0).getProviderName(), "P1");
 		assertNotNull(dto.get(0).getOperationId());
 		assertEquals(dto.get(1).getProviderName(), "P3");
 		assertNotNull(dto.get(1).getOperationId());
 	}
-	
-	
+
 	private List<Provider> generateProviderList() {
 		List<Provider> list = new ArrayList<>();
 		Provider provider1 = Provider.builder().id("1").name("P1").prefix("0034").cost(1).build();
